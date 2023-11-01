@@ -2409,3 +2409,14 @@ func (t *TextArea) MouseHandler() func(action MouseAction, event *tcell.EventMou
 		return
 	})
 }
+
+func (t *TextArea) DeleteTextLeftCursor() {
+	pos := t.cursor.pos
+	t.moveWordLeft(true)
+	t.cursor.pos = t.replace(t.cursor.pos, pos, "", false)
+	row := t.cursor.row - 1
+	t.cursor.row = -1
+	t.truncateLines(row)
+	t.findCursor(true, row)
+	t.selectionStart = t.cursor
+}
